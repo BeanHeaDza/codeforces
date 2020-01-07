@@ -3,6 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import { sync as globSync } from 'glob';
 import { rmdirSync } from 'fs';
+import { terser } from 'rollup-plugin-terser';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -17,6 +18,8 @@ const base = {
 
         // Compile TypeScript/JavaScript files
         babel({ extensions, include: ['src/**/*'] }),
+
+        terser(),
     ],
 };
 const files = globSync('./src/practice/**/*.ts');
