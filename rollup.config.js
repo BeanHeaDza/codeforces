@@ -2,6 +2,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import { sync as globSync } from 'glob';
+import { rmdirSync } from 'fs';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -19,6 +20,8 @@ const base = {
     ],
 };
 const files = globSync('./src/practice/**/*.ts');
+
+rmdirSync('./dist', { recursive: true });
 
 export default files.map(path => {
     const file = path.replace(/^\.\/src\/practice/g, './dist/practice').replace(/\.ts$/g, '.js');
