@@ -1,8 +1,8 @@
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
-import babel from 'rollup-plugin-babel';
-import { sync as globSync } from 'glob';
+import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
 import { rmdirSync } from 'fs';
+import { sync as globSync } from 'glob';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -16,15 +16,15 @@ const base = {
         commonjs(),
 
         // Compile TypeScript/JavaScript files
-        babel({ extensions, include: ['src/**/*'] }),
+        babel({ extensions, include: ['src/**/*'], babelHelpers: 'bundled' }),
     ],
 };
-const files = globSync('./src/practice/**/*.ts');
+const files = globSync('./src/**/*.main.ts');
 
 rmdirSync('./dist', { recursive: true });
 
-export default files.map(path => {
-    const file = path.replace(/^\.\/src\/practice/g, './dist/practice').replace(/\.ts$/g, '.js');
+export default files.map((path) => {
+    const file = path.replace(/^\.\/src\//g, './dist/').replace(/\.ts$/g, '.js');
     const output = [{ file, format: 'cjs' }];
     return { ...base, input: path, output };
 });
